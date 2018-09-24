@@ -13,21 +13,33 @@ if ! type "fio" > /dev/null; then
 fi
 
 case $1 in
-    64k)
-        echo 'Only running 64k fio tests...'
-        LS_CMD="*64k.fio"
+    128k)
+        echo 'Only running 128k fio tests...'
+        LS_CMD="*128k.fio"
         ;;
-    32k)
-        echo 'Only running 32k fio tests...'
-        LS_CMD="*32k.fio"
+    randread)
+        echo 'Only running randread fio tests...'
+        LS_CMD="randread*.fio"
         ;;
-    stcs)
-        echo 'Only running STCS fio tests...'
-        LS_CMD="stcs*.fio"
+    randrw)
+        echo 'Only running randrw fio tests...'
+        LS_CMD="randrw*.fio"
         ;;
-    lcs)
-        echo 'Only running LCS fio tests...'
-        LS_CMD="lcs*.fio"
+    randwrite)
+        echo 'Only running randwrite fio tests...'
+        LS_CMD="randwrite*.fio"
+        ;;
+    read)
+        echo 'Only running read fio tests...'
+        LS_CMD="read*.fio"
+        ;;
+    rw)
+        echo 'Only running rw fio tests...'
+        LS_CMD="rw*.fio"
+        ;;
+    write)
+        echo 'Only running write fio tests...'
+        LS_CMD="write*.fio"
         ;;
     all)
         echo 'Running all *.fio tests...'
@@ -45,8 +57,6 @@ fi
 
 FIOS_LIST=$(ls ${LS_CMD})
 NOW_EPOCH=$(date +"%s")
-LOG_DIR_READS=${LOG_DIR}/reads
-LOG_DIR_WRITES=${LOG_DIR}/writes
 
 # create required directories
 mkdir -p ${DATA_DIR}
@@ -61,8 +71,7 @@ if [ -d "${LOG_DIR}" ]; then
     echo "Log directory exists, archiving using current timestamp: ${NOW_EPOCH}"
     mv ${LOG_DIR} ${LOG_DIR}_${NOW_EPOCH}
 fi
-mkdir -p ${LOG_DIR_WRITES}
-mkdir -p ${LOG_DIR_READS}
+mkdir -p ${LOG_DIR}
 
 # run all fios in sequential order
 for i in $(echo ${FIOS_LIST} | tr " " "\n")
@@ -70,8 +79,7 @@ do
     echo -e "\nStarting fio test ${i}..."
     ${FIO_BIN} ./${i} --output ${REPORT_DIR}/${i}.out
 
-    mv *read*.log ${LOG_DIR_READS}/
-    mv *write*.log ${LOG_DIR_WRITES}/
+    mv *.log ${LOG_DIR}/
 
     rm -f data/*   # delete created fio files after each run
 
@@ -83,9 +91,7 @@ if type "fio_generate_plots" > /dev/null && type "gnuplot" > /dev/null; then
 
     echo "fio_generate_plots is installed generating svg reports based on fio logs"
 
-    ( cd ${LOG_DIR_READS} && rename 's/\.[0-9]+\.log/\.log/' ./* && fio_generate_plots "All-Reads" )
-    ( cd ${LOG_DIR_WRITES} && rename 's/\.[0-9]+\.log/\.log/' ./* && fio_generate_plots "All-Writes" )
+    ( cd ${LOG_DIR} && rename 's/\.[0-9]+\.log/\.log/' ./* && fio_generate_plots "All-Ops" )
 
-    mv ${LOG_DIR_READS}/*.svg ${REPORT_DIR}/
-    mv ${LOG_DIR_WRITES}/*.svg ${REPORT_DIR}/
+    mv ${LOG_DIR}/*.svg ${REPORT_DIR}/
 fi

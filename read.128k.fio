@@ -1,0 +1,21 @@
+[global]
+
+# parameters to_juicefs/fio_rw.sh
+
+ioengine=psync
+direct=1
+bs=128k
+time_based=1
+runtime=60s
+numjobs=16
+size=4G
+
+# additional parameters
+
+directory=./data                    # directory to store files
+
+[read]
+rw=read
+write_bw_log=read.128k      # output throughput results to graph
+write_lat_log=read.128k     # output latency results to graph
+write_iops_log=read.128k    # output iops results to graph
