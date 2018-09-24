@@ -17,29 +17,9 @@ case $1 in
         echo 'Only running 128k fio tests...'
         LS_CMD="*128k.fio"
         ;;
-    randread)
-        echo 'Only running randread fio tests...'
-        LS_CMD="randread*.fio"
-        ;;
-    randrw)
-        echo 'Only running randrw fio tests...'
-        LS_CMD="randrw*.fio"
-        ;;
-    randwrite)
-        echo 'Only running randwrite fio tests...'
-        LS_CMD="randwrite*.fio"
-        ;;
-    read)
-        echo 'Only running read fio tests...'
-        LS_CMD="read*.fio"
-        ;;
-    rw)
-        echo 'Only running rw fio tests...'
-        LS_CMD="rw*.fio"
-        ;;
-    write)
-        echo 'Only running write fio tests...'
-        LS_CMD="write*.fio"
+    douban)
+        echo 'Only running douban fio tests...'
+        LS_CMD="douban*.fio"
         ;;
     all)
         echo 'Running all *.fio tests...'

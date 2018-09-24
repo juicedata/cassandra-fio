@@ -1,0 +1,53 @@
+[global]
+
+# parameters to_juicefs/fio_rw.sh
+
+ioengine=psync
+direct=1
+bs=128k
+time_based=1
+runtime=60s
+numjobs=16
+size=4G
+
+# additional parameters
+
+directory=./data                    # directory to store files
+file_service_type=sequential        # finish one file write then move to the next
+filename_format=juicefs.$filenum  # create named files to be reused in all jobs below
+
+[randread]
+rw=randread
+write_bw_log=randread.128k      # output throughput results to graph
+write_lat_log=randread.128k     # output latency results to graph
+write_iops_log=randread.128k    # output iops results to graph
+
+[randrw]
+rw=randrw
+write_bw_log=randrw.128k      # output throughput results to graph
+write_lat_log=randrw.128k      # output latency results to graph
+write_iops_log=randrw.128k     # output iops results to graph
+
+[randwrite]
+rw=randwrite
+write_bw_log=randwrite.128k      # output throughput results to graph
+write_lat_log=randwrite.128k     # output latency results to graph
+write_iops_log=randwrite.128k    # output iops results to graph
+
+[read]
+rw=read
+write_bw_log=read.128k      # output throughput results to graph
+write_lat_log=read.128k     # output latency results to graph
+write_iops_log=read.128k    # output iops results to graph
+
+[rw]
+rw=rw
+write_bw_log=rw.128k      # output throughput results to graph
+write_lat_log=rw.128k     # output latency results to graph
+write_iops_log=rw.128k    # output iops results to graph
+
+[write]
+rw=write
+write_bw_log=write.128k      # output throughput results to graph
+write_lat_log=write.128k     # output latency results to graph
+write_iops_log=write.128k    # output iops results to graph
