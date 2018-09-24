@@ -15,11 +15,15 @@ fi
 case $1 in
     128k)
         echo 'Only running 128k fio tests...'
-        LS_CMD="*128k.fio"
+        LS_CMD="*.128k.fio"
+        ;;
+    4k)
+        echo 'Only running 4k fio tests...'
+        LS_CMD="*.4k.fio"
         ;;
     douban)
         echo 'Only running douban fio tests...'
-        LS_CMD="douban*.fio"
+        LS_CMD="douban.*.fio"
         ;;
     all)
         echo 'Running all *.fio tests...'
